@@ -1,0 +1,24 @@
+groups:
+  - name: sentinelflow-serving
+    rules:
+      - alert: SentinelFlowApiMissing
+        expr: up{job="sentinelflow-api"} == 0 or absent(up{job="sentinelflow-api"})
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: SentinelFlow API is unavailable
+      - alert: SentinelFlowNoPredictions
+        expr: sum(increase(sentinelflow_predictions_total[15m])) == 0 or absent(sentinelflow_predictions_total)
+        for: 15m
+        labels:
+          severity: warning
+        annotations:
+          summary: No predictions have been observed for 15 minutes
+      - alert: SentinelFlowModelNotReady
+        expr: sentinelflow_model_ready == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: SentinelFlow has not loaded a champion model

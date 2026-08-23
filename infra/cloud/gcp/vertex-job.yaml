@@ -1,0 +1,20 @@
+displayName: sentinelflow-risk-training
+jobSpec:
+  workerPoolSpecs:
+    - machineSpec:
+        machineType: n2-standard-4
+      replicaCount: 1
+      containerSpec:
+        imageUri: europe-west3-docker.pkg.dev/PROJECT_ID/sentinelflow/trainer:0.1.0
+        command:
+          - python
+          - -m
+          - sentinelflow.cli
+        args:
+          - train
+          - --data
+          - /gcs/REPLACE_ME/data/train/transactions.csv
+          - --registry
+          - /gcs/REPLACE_ME/model-registry
+  baseOutputDirectory:
+    outputUriPrefix: gs://REPLACE_ME/model-output/

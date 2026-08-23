@@ -1,0 +1,5 @@
+environment: local
+model_registry: ./model-registry
+model_name: risk-scorer
+logging:
+  level: INFO

@@ -1,0 +1,28 @@
+{
+  "title": "SentinelFlow Serving",
+  "schemaVersion": 39,
+  "panels": [
+    {
+      "type": "stat",
+      "title": "Total predictions",
+      "targets": [{"expr": "sum(sentinelflow_predictions_total)"}],
+      "gridPos": {"h": 4, "w": 6, "x": 0, "y": 0}
+    },
+    {
+      "type": "timeseries",
+      "title": "Decisions by class",
+      "targets": [{"expr": "sum by (decision) (rate(sentinelflow_predictions_total[5m]))"}],
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 4}
+    },
+    {
+      "type": "timeseries",
+      "title": "HTTP p95 latency",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum by (le) (rate(sentinelflow_http_request_duration_seconds_bucket[5m])))"
+        }
+      ],
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 4}
+    }
+  ]
+}

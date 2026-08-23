@@ -1,0 +1,12 @@
+.git
+.github
+.venv
+data
+model-registry
+mlruns
+tests
+docs
+infra
+pipelines
+*.pptx
+

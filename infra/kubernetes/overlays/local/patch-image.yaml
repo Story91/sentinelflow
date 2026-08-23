@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sentinelflow-api
+  namespace: sentinelflow
+spec:
+  template:
+    spec:
+      initContainers:
+        - name: wait-for-model
+          image: sentinelflow-api:local
+          imagePullPolicy: Never
+          command: ["python", "-c"]
+          args:
+            - |
+              import time
+              from pathlib import Path
+
+              champion = Path("/app/model-registry/risk-scorer/champion.json")
+              for _ in range(150):
+                  if champion.exists():
+                      break
+                  time.sleep(2)
+              else:
+                  raise SystemExit("Timed out waiting for champion model")
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            capabilities:
+              drop: ["ALL"]
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi
+          volumeMounts:
+            - name: model-registry
+              mountPath: /app/model-registry
+              readOnly: true
+      containers:
+        - name: api
+          image: sentinelflow-api:local
+          imagePullPolicy: Never

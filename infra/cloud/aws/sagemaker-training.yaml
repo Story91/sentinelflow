@@ -1,0 +1,23 @@
+apiVersion: sagemaker.aws.amazon.com/v1
+kind: TrainingJob
+metadata:
+  name: sentinelflow-risk-training
+spec:
+  roleArn: arn:aws:iam::ACCOUNT_ID:role/sentinelflow-sagemaker-training
+  algorithmSpecification:
+    trainingImage: ACCOUNT_ID.dkr.ecr.eu-central-1.amazonaws.com/sentinelflow/trainer:0.1.0
+    trainingInputMode: File
+  resourceConfig:
+    instanceType: ml.m5.large
+    instanceCount: 1
+    volumeSizeInGB: 30
+  inputDataConfig:
+    - channelName: train
+      dataSource:
+        s3DataSource:
+          s3DataType: S3Prefix
+          s3Uri: s3://REPLACE_ME/data/train/
+          s3DataDistributionType: FullyReplicated
+  outputDataConfig:
+    s3OutputPath: s3://REPLACE_ME/model-output/
+

@@ -1,0 +1,17 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+type: command
+display_name: sentinelflow-risk-training
+code: ../../../
+command: >-
+  python -m sentinelflow.cli train
+  --data ${{inputs.training_data}}
+  --registry ${{outputs.model_registry}}
+environment: azureml:sentinelflow-trainer:1
+compute: azureml:cpu-cluster
+inputs:
+  training_data:
+    type: uri_file
+    path: azureml://datastores/workspaceblobstore/paths/sentinelflow/train/transactions.csv
+outputs:
+  model_registry:
+    type: uri_folder

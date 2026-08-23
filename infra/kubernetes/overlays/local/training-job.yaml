@@ -1,0 +1,65 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: sentinelflow-bootstrap-model
+  namespace: sentinelflow
+  labels:
+    app.kubernetes.io/name: sentinelflow-training
+    app.kubernetes.io/component: training
+spec:
+  backoffLimit: 2
+  ttlSecondsAfterFinished: 600
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: sentinelflow-training
+        app.kubernetes.io/component: training
+    spec:
+      restartPolicy: Never
+      automountServiceAccountToken: false
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: trainer
+          image: sentinelflow-api:local
+          imagePullPolicy: Never
+          command: ["sh", "-c"]
+          args:
+            - >-
+              sentinelflow generate
+              --output /app/data/transactions.csv
+              --rows 5000
+              --seed 42
+              &&
+              sentinelflow train
+              --data /app/data/transactions.csv
+              --registry /app/model-registry
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            capabilities:
+              drop: ["ALL"]
+          resources:
+            requests:
+              cpu: 250m
+              memory: 256Mi
+            limits:
+              cpu: "1"
+              memory: 1Gi
+          volumeMounts:
+            - name: model-registry
+              mountPath: /app/model-registry
+            - name: training-data
+              mountPath: /app/data
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: model-registry
+          persistentVolumeClaim:
+            claimName: sentinelflow-model-registry
+        - name: training-data
+          emptyDir: {}
+        - name: tmp
+          emptyDir: {}

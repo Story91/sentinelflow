@@ -1,0 +1,108 @@
+schema_version: transaction-risk-v1
+owner: ml-platform
+description: Features shared by offline training and online risk scoring.
+features:
+  - name: log_amount
+    type: float
+    source: amount
+    required: true
+  - name: device_trust_score
+    type: float
+    source: device_trust_score
+    required: true
+  - name: account_age_years
+    type: float
+    source: account_age_days
+    required: true
+  - name: hour_sin
+    type: float
+    source: event_time.hour
+    required: true
+  - name: hour_cos
+    type: float
+    source: event_time.hour
+    required: true
+  - name: velocity_1h
+    type: float
+    source: velocity_1h
+    required: true
+  - name: distance_100km
+    type: float
+    source: distance_km
+    required: true
+  - name: chargeback_history
+    type: float
+    source: chargeback_history
+    required: true
+  - name: is_new_device
+    type: float
+    source: is_new_device
+    required: true
+  - name: merchant_grocery
+    type: float
+    source: merchant_category
+    required: true
+  - name: merchant_electronics
+    type: float
+    source: merchant_category
+    required: true
+  - name: merchant_travel
+    type: float
+    source: merchant_category
+    required: true
+  - name: merchant_gaming
+    type: float
+    source: merchant_category
+    required: true
+  - name: merchant_fashion
+    type: float
+    source: merchant_category
+    required: true
+  - name: merchant_utilities
+    type: float
+    source: merchant_category
+    required: true
+  - name: country_PL
+    type: float
+    source: country
+    required: true
+  - name: country_DE
+    type: float
+    source: country
+    required: true
+  - name: country_FR
+    type: float
+    source: country
+    required: true
+  - name: country_GB
+    type: float
+    source: country
+    required: true
+  - name: country_US
+    type: float
+    source: country
+    required: true
+  - name: country_ES
+    type: float
+    source: country
+    required: true
+  - name: country_IT
+    type: float
+    source: country
+    required: true
+  - name: currency_PLN
+    type: float
+    source: currency
+    required: true
+  - name: currency_EUR
+    type: float
+    source: currency
+    required: true
+  - name: currency_GBP
+    type: float
+    source: currency
+    required: true
+  - name: currency_USD
+    type: float
+    source: currency
+    required: true

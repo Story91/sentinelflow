@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sentinelflow-model-registry
+  namespace: sentinelflow
+spec:
+  accessModes: ["ReadWriteOnce"]

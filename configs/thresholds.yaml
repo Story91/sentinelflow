@@ -1,0 +1,10 @@
+model_name: risk-scorer
+decision_threshold: 0.50
+quality_gates:
+  minimum_roc_auc: 0.65
+  minimum_recall: 0.25
+  maximum_invalid_input_rate: 0.01
+drift:
+  psi_warning: 0.10
+  psi_critical: 0.25
+

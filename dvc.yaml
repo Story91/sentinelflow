@@ -1,0 +1,20 @@
+stages:
+  generate:
+    cmd: python -m sentinelflow.cli generate --output data/raw/transactions.csv --rows 5000 --seed 42
+    outs:
+      - data/raw/transactions.csv
+  train:
+    cmd: python -m sentinelflow.cli train --data data/raw/transactions.csv --registry model-registry
+    deps:
+      - data/raw/transactions.csv
+      - configs/feature_schema.yaml
+      - configs/thresholds.yaml
+      - src/sentinelflow/data/features.py
+      - src/sentinelflow/data/validation.py
+      - src/sentinelflow/ml/evaluation.py
+      - src/sentinelflow/ml/model.py
+      - src/sentinelflow/ml/quality_gate.py
+      - src/sentinelflow/ml/registry.py
+      - src/sentinelflow/ml/training.py
+    outs:
+      - model-registry

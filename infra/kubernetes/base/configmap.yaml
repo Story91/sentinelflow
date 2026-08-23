@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sentinelflow-config
+  namespace: sentinelflow
+data:
+  SENTINELFLOW_ENV: production
+  SENTINELFLOW_MODEL_NAME: risk-scorer
+  SENTINELFLOW_MODEL_REGISTRY: /app/model-registry
+  SENTINELFLOW_LOG_LEVEL: INFO
+
