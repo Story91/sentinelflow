@@ -112,13 +112,17 @@ Overlay lokalny nie wymaga CRD Prometheus Operatora i sam uruchamia jednorazowy 
 
 ```powershell
 docker build -f infra/docker/Dockerfile -t sentinelflow-api:local .
+.\scripts\load_kind_image.ps1
 kubectl apply -k infra/kubernetes/overlays/local
 kubectl -n sentinelflow wait --for=condition=complete job/sentinelflow-bootstrap-model --timeout=180s
 kubectl -n sentinelflow rollout status deployment/sentinelflow-api --timeout=180s
 kubectl -n sentinelflow port-forward service/sentinelflow-api 8000:80
 ```
 
-Docker Desktop Kubernetes korzysta z tego samego lokalnego obrazu. Dla `kind` lub `minikube` trzeba najpierw załadować obraz do klastra. HPA wymaga Metrics Server, a bazowy `ServiceMonitor` — Prometheus Operatora; te zależności są przeznaczone dla klastra platformowego.
+Docker Desktop z provisionerem `kind` używa osobnego magazynu obrazów noda, dlatego skrypt
+importuje lokalny obraz do `containerd`. Overlay lokalny pomija HPA i `ServiceMonitor`, aby działał
+na czystym klastrze Docker Desktop. Ich manifesty pozostają w bazie platformowej i wymagają
+odpowiednio Metrics Servera oraz Prometheus Operatora.
 
 ## Struktura
 

@@ -2,7 +2,7 @@
 
 The executable local path is complete. The following actions require the owner's machine settings, identity, accounts, or deployment decisions and are intentionally not automated:
 
-1. Enable Kubernetes in Docker Desktop and select its `docker-desktop` context if you want to run the local Kustomize overlay. The rendered overlay is valid without Prometheus Operator; HPA metrics require Metrics Server.
+1. Enable Kubernetes in Docker Desktop and select its `docker-desktop` context if you want to run the local Kustomize overlay. The local overlay omits HPA and ServiceMonitor so it does not require Metrics Server or Prometheus Operator; both remain in the production base.
 2. Create or connect a Git repository and configure branch protection, image registry access, CI environments, and deployment secrets.
 3. Decide whether to use AWS, GCP, or Azure for a live deployment; create the account, budget alerts, IAM roles, private networking, KMS keys, and registries.
    For SageMaker, publish the dedicated training target with

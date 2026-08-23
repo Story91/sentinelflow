@@ -8,7 +8,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /app
 
-RUN addgroup --system app && adduser --system --ingroup app app
+RUN addgroup --system --gid 10001 app \
+    && adduser --system --uid 10001 --ingroup app app
 
 COPY pyproject.toml README.md ./
 COPY src ./src
@@ -21,13 +22,13 @@ RUN if [ -n "${SENTINELFLOW_EXTRAS}" ]; then \
 COPY configs ./configs
 RUN mkdir -p /app/model-registry /app/data /app/logs && chown -R app:app /app
 
-USER app
+USER 10001:10001
 
 FROM base AS sagemaker-training
 
 USER root
 RUN mkdir -p /opt/ml/input/data/train /opt/ml/model && chown -R app:app /opt/ml
-USER app
+USER 10001:10001
 
 ENTRYPOINT ["sentinelflow-sagemaker"]
 CMD ["train"]

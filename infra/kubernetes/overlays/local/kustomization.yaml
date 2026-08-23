@@ -7,4 +7,5 @@ resources:
 patches:
   - path: patch-image.yaml
   - path: patch-pvc.yaml
+  - path: delete-hpa.yaml
   - path: delete-servicemonitor.yaml
