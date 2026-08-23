@@ -47,7 +47,7 @@ jobs:
       - name: Build image
         run: docker build -f infra/docker/Dockerfile -t sentinelflow-api:${{ github.sha }} .
       - name: Scan image
-        uses: aquasecurity/trivy-action@0.24.0
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
           image-ref: sentinelflow-api:${{ github.sha }}
           format: table
